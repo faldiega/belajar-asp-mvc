@@ -10,6 +10,30 @@ namespace Vidly.Controllers
 {
     public class MoviesController : Controller
     {
+        private List<Movie> GetMovies()
+        {
+            var movies = new List<Movie>()
+            {
+                new Movie(){ 
+                    Id=1, 
+                    Name="Shrek!",
+                    Description="A cartoon movie that has characters like monster."
+                },
+                new Movie(){ 
+                    Id=2, 
+                    Name="Fast and Furious",
+                    Description="An action and race car movie. Brian O'conner have to face Dominic Torreto."
+                },
+                new Movie(){ 
+                    Id=3, 
+                    Name="Naruto the movie",
+                    Description="A ninja movie that want to save the world."
+                }
+            };
+
+            return movies;
+        }
+
         // GET: Movies/Random
         public ActionResult Random()
         {
@@ -33,6 +57,39 @@ namespace Vidly.Controllers
             return View(viewModel);
         }
 
+        public ActionResult Index()
+        {
+            var movies = GetMovies();
+
+            var viewModel = new IndexCustomerMovieVM()
+            {
+                ListMovies = movies
+            };
+
+            return View(viewModel);
+
+        }
+
+        public ActionResult Detail(int id)
+        {
+            try
+            {
+                var movie = GetMovies().SingleOrDefault(mov => mov.Id == id);
+
+                var viewModel = new Movie()
+                {
+                    Id = movie.Id,
+                    Name = movie.Name,
+                    Description = movie.Description
+                };
+
+                return View(viewModel);
+            }
+            catch (NullReferenceException)
+            {
+                return HttpNotFound();
+            }
+        }
 
     }
 }
