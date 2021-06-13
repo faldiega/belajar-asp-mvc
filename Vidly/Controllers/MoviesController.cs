@@ -10,26 +10,37 @@ namespace Vidly.Controllers
 {
     public class MoviesController : Controller
     {
-        private List<Movie> GetMovies()
+        protected readonly VIDLYEntities _dbContext;
+
+        public MoviesController()
         {
-            var movies = new List<Movie>()
-            {
-                new Movie(){ 
-                    Id=1, 
-                    Name="Shrek!",
-                    Description="A cartoon movie that has characters like monster."
-                },
-                new Movie(){ 
-                    Id=2, 
-                    Name="Fast and Furious",
-                    Description="An action and race car movie. Brian O'conner have to face Dominic Torreto."
-                },
-                new Movie(){ 
-                    Id=3, 
-                    Name="Naruto the movie",
-                    Description="A ninja movie that want to save the world."
-                }
-            };
+            this._dbContext = new VIDLYEntities();
+        }
+
+        private List<Movies> GetMovies()
+        {
+            #region hardcode data
+            //var movies = new List<Movie>()
+            //{
+            //    new Movie(){ 
+            //        Id=1, 
+            //        Name="Shrek!",
+            //        Description="A cartoon movie that has characters like monster."
+            //    },
+            //    new Movie(){ 
+            //        Id=2, 
+            //        Name="Fast and Furious",
+            //        Description="An action and race car movie. Brian O'conner have to face Dominic Torreto."
+            //    },
+            //    new Movie(){ 
+            //        Id=3, 
+            //        Name="Naruto the movie",
+            //        Description="A ninja movie that want to save the world."
+            //    }
+            //};
+            #endregion
+
+            var movies = _dbContext.Movies.ToList();
 
             return movies;
         }
@@ -37,26 +48,28 @@ namespace Vidly.Controllers
         // GET: Movies/Random
         public ActionResult Random()
         {
-            var movie = new Movie() { Name = "Fast and Furious" };
+            var movie = new Movies() { Name = "Fast and Furious" };
 
             //var customers = new List<Customer>();
-            var customers = new List<Customer>
+            var customers = new List<Customers>
             {
-                new Customer { Name = "Customer Ega" },
-                new Customer { Name = "Customer Aldi" },
-                new Customer { Name = "Customer Bagas" }
+                new Customers { Name = "Customer Ega" },
+                new Customers { Name = "Customer Aldi" },
+                new Customers { Name = "Customer Bagas" }
             };
 
 
             var viewModel = new RandomMovieVM
             {
-                Movie = movie,
+                Movies = movie,
                 Customers = customers
             };
             
             return View(viewModel);
         }
 
+        
+        // GET: Movies/Index
         public ActionResult Index()
         {
             var movies = GetMovies();
@@ -70,15 +83,16 @@ namespace Vidly.Controllers
 
         }
 
+        // GET: Movies/Detail
         public ActionResult Detail(int id)
         {
             try
             {
-                var movie = GetMovies().SingleOrDefault(mov => mov.Id == id);
+                var movie = GetMovies().SingleOrDefault(mov => mov.ID == id);
 
-                var viewModel = new Movie()
+                var viewModel = new Movies()
                 {
-                    Id = movie.Id,
+                    ID = movie.ID,
                     Name = movie.Name,
                     Description = movie.Description
                 };

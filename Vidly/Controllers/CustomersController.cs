@@ -10,13 +10,24 @@ namespace Vidly.Controllers
 {
     public class CustomersController : Controller
     {
-        private List<Customer> GetCustomers()
+        protected readonly VIDLYEntities _dbContext;
+
+        public CustomersController()
         {
-            var customers = new List<Customer>
-            {
-                new Customer(){ Id=1, Name = "John Smith" },
-                new Customer(){ Id=2, Name = "Mary Williams" }
-            };
+            this._dbContext = new VIDLYEntities();
+        }
+
+        private List<Customers> GetCustomers()
+        {
+            #region hardcode data
+            //var customers = new List<Customer>
+            //{
+            //    new Customer(){ Id=1, Name = "John Smith" },
+            //    new Customer(){ Id=2, Name = "Mary Williams" }
+            //};
+            #endregion
+
+            var customers = _dbContext.Customers.ToList();
 
             return customers;
         }
@@ -38,11 +49,11 @@ namespace Vidly.Controllers
         {
             try
             {
-                var customer = GetCustomers().SingleOrDefault(cus => cus.Id == id);
+                var customer = GetCustomers().SingleOrDefault(cus => cus.ID == id);
 
-                var viewModel = new Customer()
+                var viewModel = new Customers()
                 {
-                    Id = customer.Id,
+                    ID = customer.ID,
                     Name = customer.Name
                 };
 
