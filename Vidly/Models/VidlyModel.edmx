@@ -7,22 +7,80 @@
     <Schema Namespace="VIDLYModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Customers">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="CustomerID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerName" Type="varchar" MaxLength="50" />
+          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="IsSubscribedToNewsletter" Type="bit" />
+          <Property Name="MembershipTypeID" Type="int" />
+        </EntityType>
+        <EntityType Name="Genres">
+          <Key>
+            <PropertyRef Name="GenreID" />
+          </Key>
+          <Property Name="GenreID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GenreName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MembershipType">
+          <Key>
+            <PropertyRef Name="MembershipTypeID" />
+          </Key>
+          <Property Name="MembershipTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MembershipTypeName" Type="varchar" MaxLength="50" />
+          <Property Name="SignUpFee" Type="int" />
+          <Property Name="DurationInMonths" Type="int" />
+          <Property Name="DiscountRate" Type="int" />
         </EntityType>
         <EntityType Name="Movies">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="MovieID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="MovieID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MovieName" Type="varchar" MaxLength="50" />
           <Property Name="Description" Type="text" />
+          <Property Name="GenreID" Type="int" />
+          <Property Name="ReleaseDate" Type="datetime" />
+          <Property Name="DateAdded" Type="datetime" />
+          <Property Name="NumberInStock" Type="int" />
         </EntityType>
+        <Association Name="FK_Customers_MembershipType">
+          <End Role="MembershipType" Type="Self.MembershipType" Multiplicity="0..1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MembershipType">
+              <PropertyRef Name="MembershipTypeID" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="MembershipTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Movies_Genres">
+          <End Role="Genres" Type="Self.Genres" Multiplicity="0..1" />
+          <End Role="Movies" Type="Self.Movies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genres">
+              <PropertyRef Name="GenreID" />
+            </Principal>
+            <Dependent Role="Movies">
+              <PropertyRef Name="GenreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="VIDLYModelStoreContainer">
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genres" EntityType="Self.Genres" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MembershipType" EntityType="Self.MembershipType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Movies" EntityType="Self.Movies" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Customers_MembershipType" Association="Self.FK_Customers_MembershipType">
+            <End Role="MembershipType" EntitySet="MembershipType" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Movies_Genres" Association="Self.FK_Movies_Genres">
+            <End Role="Genres" EntitySet="Genres" />
+            <End Role="Movies" EntitySet="Movies" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -30,23 +88,85 @@
       <Schema Namespace="VIDLYModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Customers">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="CustomerID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
+          <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsSubscribedToNewsletter" Type="Boolean" />
+          <Property Name="MembershipTypeID" Type="Int32" />
+          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MembershipType" Relationship="VIDLYModel.FK_Customers_MembershipType" FromRole="Customers" ToRole="MembershipType" />
         </EntityType>
         <EntityContainer Name="VIDLYEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Customers" EntityType="Self.Customers" />
           <EntitySet Name="Movies" EntityType="VIDLYModel.Movies" />
+          <EntitySet Name="MembershipType" EntityType="VIDLYModel.MembershipType" />
+          <AssociationSet Name="FK_Customers_MembershipType" Association="VIDLYModel.FK_Customers_MembershipType">
+            <End Role="MembershipType" EntitySet="MembershipType" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <EntitySet Name="Genres" EntityType="VIDLYModel.Genres" />
+          <AssociationSet Name="FK_Movies_Genres" Association="VIDLYModel.FK_Movies_Genres">
+            <End Role="Genres" EntitySet="Genres" />
+            <End Role="Movies" EntitySet="Movies" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Movies">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="MovieID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MovieID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
+          <Property Name="MovieName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="GenreID" Type="Int32" />
+          <NavigationProperty Name="Genres" Relationship="VIDLYModel.FK_Movies_Genres" FromRole="Movies" ToRole="Genres" />
+          <Property Name="ReleaseDate" Type="DateTime" Precision="3" />
+          <Property Name="DateAdded" Type="DateTime" Precision="3" />
+          <Property Name="NumberInStock" Type="Int32" />
         </EntityType>
+        <EntityType Name="MembershipType">
+          <Key>
+            <PropertyRef Name="MembershipTypeID" />
+          </Key>
+          <Property Name="MembershipTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" />
+          <Property Name="MembershipTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SignUpFee" Type="Int32" />
+          <Property Name="DurationInMonths" Type="Int32" />
+          <Property Name="DiscountRate" Type="Int32" />
+          <NavigationProperty Name="Customers" Relationship="VIDLYModel.FK_Customers_MembershipType" FromRole="MembershipType" ToRole="Customers" />
+        </EntityType>
+        <Association Name="FK_Customers_MembershipType">
+          <End Type="VIDLYModel.MembershipType" Role="MembershipType" Multiplicity="0..1" />
+          <End Type="VIDLYModel.Customers" Role="Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MembershipType">
+              <PropertyRef Name="MembershipTypeID" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="MembershipTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Genres">
+          <Key>
+            <PropertyRef Name="GenreID" />
+          </Key>
+          <Property Name="GenreID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GenreName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Movies" Relationship="VIDLYModel.FK_Movies_Genres" FromRole="Genres" ToRole="Movies" />
+        </EntityType>
+        <Association Name="FK_Movies_Genres">
+          <End Type="VIDLYModel.Genres" Role="Genres" Multiplicity="0..1" />
+          <End Type="VIDLYModel.Movies" Role="Movies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genres">
+              <PropertyRef Name="GenreID" />
+            </Principal>
+            <Dependent Role="Movies">
+              <PropertyRef Name="GenreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -56,17 +176,43 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="VIDLYModel.Customers">
               <MappingFragment StoreEntitySet="Customers">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="MembershipTypeID" ColumnName="MembershipTypeID" />
+                <ScalarProperty Name="IsSubscribedToNewsletter" ColumnName="IsSubscribedToNewsletter" />
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Movies">
             <EntityTypeMapping TypeName="VIDLYModel.Movies">
               <MappingFragment StoreEntitySet="Movies">
+                <ScalarProperty Name="NumberInStock" ColumnName="NumberInStock" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
+                <ScalarProperty Name="GenreID" ColumnName="GenreID" />
+                <ScalarProperty Name="MovieName" ColumnName="MovieName" />
+                <ScalarProperty Name="MovieID" ColumnName="MovieID" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
+                </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MembershipType">
+            <EntityTypeMapping TypeName="VIDLYModel.MembershipType">
+              <MappingFragment StoreEntitySet="MembershipType">
+                <ScalarProperty Name="MembershipTypeName" ColumnName="MembershipTypeName" />
+                <ScalarProperty Name="MembershipTypeID" ColumnName="MembershipTypeID" />
+                <ScalarProperty Name="DiscountRate" ColumnName="DiscountRate" />
+                <ScalarProperty Name="DurationInMonths" ColumnName="DurationInMonths" />
+                <ScalarProperty Name="SignUpFee" ColumnName="SignUpFee" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="VIDLYModel.Genres">
+              <MappingFragment StoreEntitySet="Genres">
+                <ScalarProperty Name="GenreName" ColumnName="GenreName" />
+                <ScalarProperty Name="GenreID" ColumnName="GenreID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

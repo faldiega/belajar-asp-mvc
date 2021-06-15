@@ -1,12 +1,14 @@
-﻿@model Vidly.ViewModels.IndexCustomerMovieVM
+﻿@using Vidly.ViewModels
+@model List<CustomerMembershipVM>
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Customer Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Customers</h2>
 
-@if (Model.ListCustomers.Count == 0)
+@if (Model.Count == 0)
 {
     <p>No customers here.</p>
 }
@@ -15,13 +17,17 @@ else
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
-                <td>Customer</td>
-            </tr></thead>
+                <th>Customer</th>
+                <th>Membership Type</th>
+                <th>Discount Rate</th>
+            </tr></thead>        
         <tbody>
-            @foreach (var customer in Model.ListCustomers)
+            @foreach (var customer in Model)
             {
                 <tr>
-                    <td>@Html.ActionLink(customer.Name,"Detail","Customers", new { id = customer.ID }, null)</td>
+                    <td>@Html.ActionLink(customer.CustomerName,"Detail","Customers", new { id = customer.CustomerID }, null)</td>
+                    <td>@customer.MembershipType.MembershipTypeName</td>
+                    <td>@customer.MembershipType.DiscountRate%</td>
                 </tr>
             }
         </tbody>

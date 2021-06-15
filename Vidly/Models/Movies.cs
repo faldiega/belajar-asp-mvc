@@ -14,8 +14,14 @@ namespace Vidly.Models
     
     public partial class Movies
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
+        public int MovieID { get; set; }
+        public string MovieName { get; set; }
         public string Description { get; set; }
+        public Nullable<int> GenreID { get; set; }
+        public Nullable<System.DateTime> ReleaseDate { get; set; }
+        public Nullable<System.DateTime> DateAdded { get; set; }
+        public Nullable<int> NumberInStock { get; set; }
+    
+        public virtual Genres Genres { get; set; }
     }
 }

@@ -1,12 +1,13 @@
-﻿@model Vidly.ViewModels.IndexCustomerMovieVM
+﻿@using Vidly.ViewModels
+@model List<MovieGenreVM>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Movie Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Movies</h2>
 
-@if (Model.ListMovies.Count == 0)
+@if (Model.Count == 0)
 {
     <p>No movies here.</p>
 }
@@ -16,13 +17,15 @@ else
         <thead>
             <tr>
                 <td>Movie</td>
+                <td>Genre</td>
             </tr>
         </thead>
         <tbody>
-            @foreach (var movie in Model.ListMovies)
+            @foreach (var movie in Model)
             {
                 <tr>
-                    <td>@Html.ActionLink(@movie.Name,"Detail","Movies",new { id = movie.ID },null)</td>
+                    <td>@Html.ActionLink(@movie.MovieName,"Detail","Movies",new { movieId = movie.MovieID },null)</td>
+                    <td>@movie.Genre.GenreName</td>
                 </tr>
             }
         </tbody>

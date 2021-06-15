@@ -14,7 +14,12 @@ namespace Vidly.Models
     
     public partial class Customers
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
+        public int CustomerID { get; set; }
+        public string CustomerName { get; set; }
+        public Nullable<bool> IsSubscribedToNewsletter { get; set; }
+        public Nullable<int> MembershipTypeID { get; set; }
+        public Nullable<System.DateTime> BirthDate { get; set; }
+    
+        public virtual MembershipType MembershipType { get; set; }
     }
 }

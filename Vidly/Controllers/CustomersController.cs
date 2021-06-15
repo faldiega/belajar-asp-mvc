@@ -4,65 +4,56 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Vidly.Models;
+using Vidly.Provider;
 using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
     public class CustomersController : Controller
     {
-        protected readonly VIDLYEntities _dbContext;
+        private CustomerProvider provider;
 
         public CustomersController()
         {
-            this._dbContext = new VIDLYEntities();
+            provider = new CustomerProvider();
         }
 
-        private List<Customers> GetCustomers()
-        {
-            #region hardcode data
-            //var customers = new List<Customer>
-            //{
-            //    new Customer(){ Id=1, Name = "John Smith" },
-            //    new Customer(){ Id=2, Name = "Mary Williams" }
-            //};
-            #endregion
-
-            var customers = _dbContext.Customers.ToList();
-
-            return customers;
-        }
 
         // GET: Customers
         public ActionResult Index()
         {
-            var customers = GetCustomers();
+            #region using hardcode data
+            //var customers = GetCustomers();
+            //var viewModel = new IndexCustomerMovieVM()
+            //{
+            //    ListCustomers = customers
+            //};
+            #endregion
 
-            var viewModel = new IndexCustomerMovieVM()
-            {
-                ListCustomers = customers
-            };
+            var viewModel = provider.GetIndexCustomerMembership();
+            if (viewModel == null)
+                return HttpNotFound();
 
             return View(viewModel);
         }
 
         public ActionResult Detail(int id)
         {
-            try
-            {
-                var customer = GetCustomers().SingleOrDefault(cus => cus.ID == id);
 
-                var viewModel = new Customers()
-                {
-                    ID = customer.ID,
-                    Name = customer.Name
-                };
+            #region using hardcode data
+            //var customer = GetCustomers().SingleOrDefault(cus => cus.ID == id);
+            //var viewModel = new Customers()
+            //{
+            //    ID = customer.ID,
+            //    Name = customer.Name
+            //};
+            #endregion
 
-                return View(viewModel);
-            }
-            catch (NullReferenceException)
-            {
+            var customer = provider.GetSingleCustomerMembership(id);
+            if (customer == null)
                 return HttpNotFound();
-            }
+
+            return View(customer);
         }
     }
 }

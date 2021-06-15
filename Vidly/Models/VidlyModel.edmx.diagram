@@ -5,8 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d596a0df98264958b992425b9aba6645" Name="Diagram1">
-        <EntityTypeShape EntityType="VIDLYModel.Customers" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="VIDLYModel.Movies" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="VIDLYModel.Customers" Width="1.875" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VIDLYModel.Movies" Width="1.5" PointX="3.75" PointY="0.75" />
+        <EntityTypeShape EntityType="VIDLYModel.MembershipType" Width="2.5" PointX="0.5" PointY="3.75" />
+        <AssociationConnector Association="VIDLYModel.FK_Customers_MembershipType" />
+        <EntityTypeShape EntityType="VIDLYModel.Genres" Width="1.5" PointX="3.875" PointY="3.75" />
+        <AssociationConnector Association="VIDLYModel.FK_Movies_Genres" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

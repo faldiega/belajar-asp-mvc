@@ -185,8 +185,14 @@
     <Compile Include="Models\Customers.cs">
       <DependentUpon>VidlyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Genres.cs">
+      <DependentUpon>VidlyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MembershipType.cs">
+      <DependentUpon>VidlyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Movies.cs">
       <DependentUpon>VidlyModel.tt</DependentUpon>
     </Compile>
@@ -206,8 +212,12 @@
       <DependentUpon>VidlyModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provider\CustomerProvider.cs" />
+    <Compile Include="Provider\MovieProvider.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\CustomerMembershipVM.cs" />
     <Compile Include="ViewModels\IndexCustomerMovieVM.cs" />
+    <Compile Include="ViewModels\MovieGenreVM.cs" />
     <Compile Include="ViewModels\RandomMovieVM.cs" />
   </ItemGroup>
   <ItemGroup>
