@@ -55,5 +55,23 @@ namespace Vidly.Controllers
 
             return View(customer);
         }
+
+        public ActionResult New()
+        {
+            var membershipType = provider.GetMembershipTypes();
+            var viewModel = new CustomerNewVM
+            {
+                MembershipType = membershipType
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Create(CustomerNewVM viewModel)
+        {
+            provider.CreateCustomer(viewModel);
+            return RedirectToAction("Index", "Customers");
+        }
+        
     }
 }

@@ -11,15 +11,21 @@ namespace Vidly.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Customers
     {
         public int CustomerID { get; set; }
+
+        [Display(Name = "Name")]
         public string CustomerName { get; set; }
-        public Nullable<bool> IsSubscribedToNewsletter { get; set; }
+
+        public bool IsSubscribedToNewsletter { get; set; }
+        
         public Nullable<int> MembershipTypeID { get; set; }
+        
         public Nullable<System.DateTime> BirthDate { get; set; }
-    
+
         public virtual MembershipType MembershipType { get; set; }
     }
 }

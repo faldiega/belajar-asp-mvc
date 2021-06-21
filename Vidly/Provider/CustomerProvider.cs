@@ -64,14 +64,26 @@ namespace Vidly.Provider
             return viewModel;
         }
 
-        
-
-
-        private List<MembershipType> GetMembershipTypes()
+        public List<MembershipType> GetMembershipTypes()
         {
             return _dbContext.MembershipType.ToList();
         }
 
+
+        //CREATE
+        public void CreateCustomer(CustomerNewVM viewModel)
+        {
+            var customer = new Customers()
+            {
+                CustomerName = viewModel.Customer.CustomerName,
+                BirthDate = viewModel.Customer.BirthDate,
+                IsSubscribedToNewsletter = viewModel.Customer.IsSubscribedToNewsletter,
+                MembershipTypeID = viewModel.Customer.MembershipTypeID
+            };
+
+            _dbContext.Customers.Add(customer);
+            _dbContext.SaveChanges();
+        }
 
     }
 }

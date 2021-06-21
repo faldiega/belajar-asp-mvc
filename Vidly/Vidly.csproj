@@ -216,6 +216,7 @@
     <Compile Include="Provider\MovieProvider.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\CustomerMembershipVM.cs" />
+    <Compile Include="ViewModels\CustomerNewVM.cs" />
     <Compile Include="ViewModels\IndexCustomerMovieVM.cs" />
     <Compile Include="ViewModels\MovieGenreVM.cs" />
     <Compile Include="ViewModels\RandomMovieVM.cs" />
@@ -313,6 +314,7 @@
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Account\DisplayEmail.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Customers\New.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
