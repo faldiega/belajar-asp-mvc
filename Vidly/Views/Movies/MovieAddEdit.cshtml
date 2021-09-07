@@ -1,0 +1,36 @@
+﻿@model Vidly.ViewModels.MovieAddEditVM
+
+@{
+    ViewBag.Title = "New Movie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Movie</h2>
+
+@using (Html.BeginForm("Save", "Movies"))
+{
+    @Html.HiddenFor(m => m.Movie.MovieID)
+    <div class="form-group">
+        @Html.Label("MovieName", "Movie Name")
+        @Html.TextBoxFor(m => m.Movie.MovieName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.Label("ReleaseDate", "Release Date")
+        @Html.TextBoxFor(m => m.Movie.ReleaseDate, "{0: dd/MM/yyyy}", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.Label("DateAdded", "Date Added")
+        @Html.TextBoxFor(m => m.Movie.DateAdded, "{0: dd/MM/yyyy}", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.Label("GenreID", "Genre")
+        @Html.DropDownListFor(m => m.Movie.GenreID, new SelectList(Model.Genres, "GenreID", "GenreName"), "-- Select Genre --", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.Label("NumberInStock", "Stock")
+        @Html.TextBoxFor(m => m.Movie.NumberInStock, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+
+
+}

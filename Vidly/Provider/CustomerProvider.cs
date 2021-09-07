@@ -70,20 +70,33 @@ namespace Vidly.Provider
         }
 
 
-        //CREATE
-        public void CreateCustomer(CustomerNewVM viewModel)
+        // CREATE OR UPDATE CUSTOMER
+        public void AddOrUpdateCustomer(CustomerAddEditVM viewModel)
         {
-            var customer = new Customers()
+            var selectedCustomer = GetSingleCustomer(viewModel.Customer.CustomerID);
+            if (selectedCustomer == null)
             {
-                CustomerName = viewModel.Customer.CustomerName,
-                BirthDate = viewModel.Customer.BirthDate,
-                IsSubscribedToNewsletter = viewModel.Customer.IsSubscribedToNewsletter,
-                MembershipTypeID = viewModel.Customer.MembershipTypeID
-            };
+                var customer = new Customers()
+                {
+                    CustomerName = viewModel.Customer.CustomerName,
+                    BirthDate = viewModel.Customer.BirthDate,
+                    IsSubscribedToNewsletter = viewModel.Customer.IsSubscribedToNewsletter,
+                    MembershipTypeID = viewModel.Customer.MembershipTypeID
+                };
 
-            _dbContext.Customers.Add(customer);
+                _dbContext.Customers.Add(customer);
+            } 
+            else
+            {
+                selectedCustomer.CustomerName = viewModel.Customer.CustomerName;
+                selectedCustomer.BirthDate = viewModel.Customer.BirthDate;
+                selectedCustomer.IsSubscribedToNewsletter = viewModel.Customer.IsSubscribedToNewsletter;
+                selectedCustomer.MembershipTypeID = viewModel.Customer.MembershipTypeID;
+            }
+
             _dbContext.SaveChanges();
         }
+
 
     }
 }

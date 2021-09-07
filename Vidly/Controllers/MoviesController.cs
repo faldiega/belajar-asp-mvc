@@ -126,6 +126,49 @@ namespace Vidly.Controllers
             return View(movie);
         }
 
+        public ActionResult New()
+        {
+            var genre = provider.GetGenres();
+            var viewModel = new MovieAddEditVM()
+            {
+                Genres = genre
+            };
+
+            return View("MovieAddEdit", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Save(MovieAddEditVM viewModel)
+        {
+            provider.AddOrUpdateMovie(viewModel);
+            return RedirectToAction("Index", "Movies");
+        }
+
+        public ActionResult Edit(int movieId)
+        {
+            var movie = provider.GetSingleMovie(movieId);
+            if (movie == null)
+                return HttpNotFound();
+
+            var singleMovie = new Movies()
+            {
+                MovieID = movie.MovieID,
+                MovieName = movie.MovieName,
+                Description = movie.Description,
+                ReleaseDate = movie.ReleaseDate,
+                DateAdded = movie.DateAdded,
+                GenreID = movie.GenreID,
+                NumberInStock = movie.NumberInStock
+            };
+
+            var viewModel = new MovieAddEditVM()
+            {
+                Movie = singleMovie,
+                Genres = provider.GetGenres()
+            };
+
+            return View("MovieAddEdit", viewModel);
+        }
 
     }
 }

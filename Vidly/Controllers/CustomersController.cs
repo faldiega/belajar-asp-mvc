@@ -59,18 +59,32 @@ namespace Vidly.Controllers
         public ActionResult New()
         {
             var membershipType = provider.GetMembershipTypes();
-            var viewModel = new CustomerNewVM
+            var viewModel = new CustomerAddEditVM
             {
                 MembershipType = membershipType
             };
-            return View(viewModel);
+            return View("CustomerAddEdit", viewModel);
         }
 
         [HttpPost]
-        public ActionResult Create(CustomerNewVM viewModel)
+        public ActionResult Save(CustomerAddEditVM viewModel)
         {
-            provider.CreateCustomer(viewModel);
+            provider.AddOrUpdateCustomer(viewModel);
             return RedirectToAction("Index", "Customers");
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var customer = provider.GetSingleCustomer(id);
+            if (customer == null)
+                return HttpNotFound();
+
+            var viewModel = new CustomerAddEditVM
+            {
+                Customer = customer,
+                MembershipType = provider.GetMembershipTypes()
+            };
+            return View("CustomerAddEdit", viewModel);
         }
         
     }

@@ -21,7 +21,7 @@ namespace Vidly.Provider
             return _dbContext.Movies.ToList();
         }
 
-        private List<Genres> GetGenres()
+        public List<Genres> GetGenres()
         {
             return _dbContext.Genres.ToList();
         }
@@ -35,6 +35,7 @@ namespace Vidly.Provider
                             MovieID = mov.MovieID,
                             MovieName = mov.MovieName,
                             Description = mov.Description,
+                            GenreID = mov.GenreID,
                             Genre = mov.Genres,
                             ReleaseDate = mov.ReleaseDate,
                             DateAdded = mov.DateAdded,
@@ -59,5 +60,43 @@ namespace Vidly.Provider
 
             return result;
         }
+
+        public Movies GetSingleMovie(int movieId)
+        {
+            var movie = GetMovies().SingleOrDefault(m => m.MovieID == movieId);
+            return movie;
+        }
+
+        // CREATE OR UPDATE MOVIE
+        public void AddOrUpdateMovie(MovieAddEditVM viewModel)
+        {
+            var selectedMovie = GetSingleMovie(viewModel.Movie.MovieID);
+            if (selectedMovie == null)
+            {
+                Movies movie = new Movies()
+                {
+                    MovieName = viewModel.Movie.MovieName,
+                    Description = viewModel.Movie.Description,
+                    GenreID = viewModel.Movie.GenreID,
+                    ReleaseDate = viewModel.Movie.ReleaseDate,
+                    DateAdded = viewModel.Movie.DateAdded,
+                    NumberInStock = viewModel.Movie.NumberInStock
+                };
+
+                _dbContext.Movies.Add(movie);
+            }
+            else
+            {
+                selectedMovie.MovieName = viewModel.Movie.MovieName;
+                selectedMovie.Description = viewModel.Movie.Description;
+                selectedMovie.GenreID = viewModel.Movie.GenreID;
+                selectedMovie.ReleaseDate = viewModel.Movie.ReleaseDate;
+                selectedMovie.DateAdded = viewModel.Movie.DateAdded;
+                selectedMovie.NumberInStock = viewModel.Movie.NumberInStock;
+            }
+
+            _dbContext.SaveChanges();
+        }
+
     }
 }

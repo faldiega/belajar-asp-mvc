@@ -11,6 +11,7 @@ namespace Vidly.ViewModels
         public int MovieID { get; set; }
         public string MovieName { get; set; }
         public string Description { get; set; }
+        public int? GenreID { get; set; }
         public Genres Genre { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public DateTime? DateAdded { get; set; }
