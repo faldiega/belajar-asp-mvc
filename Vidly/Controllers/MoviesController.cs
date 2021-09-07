@@ -134,6 +134,8 @@ namespace Vidly.Controllers
                 Genres = genre
             };
 
+            ViewBag.HeaderText = "New Movie";
+            ViewBag.ButtonText = "Save";
             return View("MovieAddEdit", viewModel);
         }
 
@@ -167,7 +169,16 @@ namespace Vidly.Controllers
                 Genres = provider.GetGenres()
             };
 
+            ViewBag.HeaderText = "Update Movie";
+            ViewBag.ButtonText = "Update";
             return View("MovieAddEdit", viewModel);
+        }
+
+
+        public ActionResult Delete(int movieId)
+        {
+            provider.DeleteMovie(movieId);
+            return RedirectToAction("Index", "Movies");
         }
 
     }

@@ -97,6 +97,15 @@ namespace Vidly.Provider
             _dbContext.SaveChanges();
         }
 
-
+        // DELETE CUSTOMER
+        public void DeleteCustomer(int customerId)
+        {
+            var selectedCustomer = GetSingleCustomer(customerId);
+            if (selectedCustomer != null)
+            {
+                _dbContext.Customers.Remove(selectedCustomer);
+                _dbContext.SaveChanges();
+            }
+        }
     }
 }

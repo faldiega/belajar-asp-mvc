@@ -63,6 +63,9 @@ namespace Vidly.Controllers
             {
                 MembershipType = membershipType
             };
+
+            ViewBag.HeaderText = "New Customer";
+            ViewBag.ButtonText = "Save";
             return View("CustomerAddEdit", viewModel);
         }
 
@@ -84,7 +87,16 @@ namespace Vidly.Controllers
                 Customer = customer,
                 MembershipType = provider.GetMembershipTypes()
             };
+
+            ViewBag.HeaderText = "Update Customer";
+            ViewBag.ButtonText = "Update";
             return View("CustomerAddEdit", viewModel);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            provider.DeleteCustomer(id);
+            return RedirectToAction("Index", "Customers");
         }
         
     }

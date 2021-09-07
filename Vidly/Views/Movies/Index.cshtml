@@ -30,7 +30,10 @@ else
                 <tr>
                     <td>@Html.ActionLink(@movie.MovieName, "Detail", "Movies", new { movieId = movie.MovieID }, null)</td>
                     <td>@movie.Genre.GenreName</td>
-                    <td>@Html.ActionLink("Edit", "Edit", "Movies", new { movieId = movie.MovieID }, null)</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "Movies", new { movieId = movie.MovieID }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Delete", "Delete", "Movies", new { movieId = movie.MovieID }, new { @class = "btn btn-danger" })
+                    </td>
                 </tr>
             }
         </tbody>

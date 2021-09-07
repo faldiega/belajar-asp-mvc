@@ -98,5 +98,15 @@ namespace Vidly.Provider
             _dbContext.SaveChanges();
         }
 
+        // DELETE MOVIE
+        public void DeleteMovie(int movieId)
+        {
+            var selectedMovie = GetSingleMovie(movieId);
+            if (selectedMovie != null)
+            {
+                _dbContext.Movies.Remove(selectedMovie);
+                _dbContext.SaveChanges();
+            }
+        }
     }
 }
